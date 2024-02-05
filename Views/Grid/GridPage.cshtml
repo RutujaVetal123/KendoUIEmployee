@@ -11,11 +11,11 @@
         columns.Bound(p => p.ShipCity);
         columns.Command(command => { command.Edit(); }).Width(250);
     })
-        .Editable(editable => editable.Mode(GridEditMode.PopUp)) 
-        .ToolBar(toolbar => 
+        .Editable(editable => editable.Mode(GridEditMode.PopUp))
+        .ToolBar(toolbar =>
         {
              toolbar.Create();
-         })        
+         })
         .Resizable(resize => resize.Columns(true))
         .Pageable()
         .Sortable()

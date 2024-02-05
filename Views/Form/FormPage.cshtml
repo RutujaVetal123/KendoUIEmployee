@@ -8,41 +8,118 @@
         .HtmlAttributes(new { action = @Url.Action("FormSubmit","Form"), method = "POST" })        .Validatable(v =>
         {
             v.ValidateOnBlur(true);        })        .Items(items =>
-        {
-            items.AddGroup()
-                .Label("Registration Form")
-                .Items(i =>
-                {
-                    i.Add()
-                         .Field(f => f.FirstName)
-                         .Label(l => l.Text("First Name:"));
-                    i.Add()
-                        .Field(f => f.LastName)
-                        .Label(l => l.Text("Last Name:"));
-                    i.Add()
-                        .Field(f => f.UserName)
-                        .Label(l => l.Text("Username:"));
-                    i.Add()
-                        .Field(f => f.Password)
-                        .Label(l => l.Text("Password:"))
-                        .Hint("Hint: enter alphanumeric characters only.")
-                        .EditorTemplateHandler("setPasswordEditor");
-                    i.Add()
-                        .Field(f => f.Email)
-                        .Label(l => l.Text("Email:"));
-                    i.Add()
-                       .Field(f => f.DateOfBirth)
-                       .Label(l => l.Text("Date of Birth:").Optional(true));
-                    i.Add()
-                        .Field(f => f.Agree)
-                        .Label(l => l.Text("Agree to Terms:"));
-                });
-        })
+            {
+                items.AddGroup()
+                    .Label("Registration Form")
+                    .Items(i =>
+                    {
+                        i.Add()
+                             .Field(f => f.FirstName)
+                             .Label(l => l.Text("First Name:"));
+                        i.Add()
+                            .Field(f => f.LastName)
+                            .Label(l => l.Text("Last Name:"));
+
+                        i.Add()
+                            .Field(f => f.GenderId)
+                            .Label(l => l.Text("Gender:"))
+                            .EditorTemplateHandler("setGenderRadioButtons");
+                        i.Add()
+                            .Field(f => f.UserName)
+                            .Label(l => l.Text("Username:"));
+                        i.Add()
+                            .Field(f => f.Password)
+                            .Label(l => l.Text("Password:"))
+                            .Hint("Hint: enter alphanumeric characters only.")
+                            .EditorTemplateHandler("setPasswordEditor");
+                        i.Add()
+                            .Field(f => f.Email)
+                            .Label(l => l.Text("Email:"));
+                        i.Add()
+                           .Field(f => f.DateOfBirth)
+                           .Label(l => l.Text("Date of Birth:").Optional(true));
+                        i.Add()
+                            .Field(f => f.Agree)
+                            .Label(l => l.Text("Agree to Terms:"));
+                        i.Add()
+                           .Field(f => f.ProductId)
+                           .Label(l => l.Text("Product:"))
+                           .EditorTemplateHandler("setProductDropdown");
+                        i.Add()
+                           .Field(f => f.LanguageId)
+                           .Label(l => l.Text("Language:"))
+                           .EditorTemplateHandler("setLanguageMultiselect");
+
+                    });
+            })
         .Events(ev => ev.ValidateField("onFormValidateField").Submit("onFormSubmit").Clear("onFormClear"))
     )
 </div>
 
     <script>
+        function setGenderRadioButtons(container, options) {
+            $('<input type="radio" name="' + options.field + '" value="1" data-bind="checked: GenderId"/> Male<br/>')
+                .appendTo(container);
+            $('<input type="radio" name="' + options.field + '" value="2" data-bind="checked: GenderId"/> Female<br/>')
+                .appendTo(container);
+            $('<input type="radio" name="' + options.field + '" value="3" data-bind="checked: GenderId"/> Other<br/>')
+                .appendTo(container);
+        }
+        function setProductDropdown(container, options) {
+            $('<input id="ProductId" name="' + options.field + '" required="required" data-bind="value: ProductId" />')
+                .appendTo(container)
+                .kendoDropDownList({
+                    dataSource: {
+                        data: [
+                            { ProductId: 1, ProductName: "Soap" },
+                            { ProductId: 2, ProductName: "Bag" },
+                            { ProductId: 3, ProductName: "Car" },
+                            // Add more countries as needed
+                        ],
+                        schema: {
+                            model: {
+                                id: "ProductId",
+                                fields: {
+                                    ProductId: { type: "number" },
+                                    ProductName: { type: "string" }
+                                }
+                            }
+                        }
+                    },
+                    dataTextField: "ProductName",
+                    dataValueField: "ProductId",
+                    optionLabel: "-- Select Product --"
+                });
+        }
+        function setLanguageMultiselect(container, options) {
+            $('<select id="LanguageId" name="' + options.field + '" data-bind="value: LanguageId" multiple="multiple"></select>')
+                .appendTo(container)
+                .kendoMultiSelect({
+                    dataSource: {
+                        data: [
+                            { LanguageId: 1, Language: "Marathi" },
+                            { LanguageId: 2, Language: "Hindi" },
+                            { LanguageId: 3, Language: "English" },
+                            { LanguageId: 4, Language: "French" },
+                            { LanguageId: 5, Language: "Spanish" },
+                            { LanguageId: 6, Language: "Arabic" },
+                            { LanguageId: 7, Language: "japanese" },
+                            // Add more countries as needed
+                        ],
+                        schema: {
+                            model: {
+                                id: "LanguageId",
+                                fields: {
+                                    LanguageId: { type: "number" },
+                                    Language: { type: "string" }
+                                }
+                            }
+                        }
+                    },
+                    dataTextField: "Language",
+                    dataValueField: "LanguageId"
+                });
+        }
     function setPasswordEditor(container, options) {
         $('<input type="password" id="Password" name="' + options.field + '" title="Password" required="required" autocomplete="off" aria-labelledby="Password-form-label" data-bind="value: Password" aria-describedby="Password-form-hint"/>')
             .appendTo(container)

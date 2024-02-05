@@ -17,7 +17,8 @@ namespace Telerik.Scaffolders.Controllers
                 UserName = "johny",
                 Password = "123456",
                 DateOfBirth = new DateTime(1990, 5, 8),
-                Agree = false
+                Agree = false,
+                ProductId=1
             };
             
             return View(viewModel);

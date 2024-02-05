@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Telerik.Scaffolders.Models.Form
@@ -62,6 +63,12 @@ namespace Telerik.Scaffolders.Models.Form
         public string Company { get; set; }
 
         public string Feedback { get; set; }
+
+        public int ProductId { get; set; }
+
+        public List<int> LanguageId { get; set; }
+
+        public int GenderId { get; set; }
     }
 }
 
