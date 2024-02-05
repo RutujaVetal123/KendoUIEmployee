@@ -92,7 +92,7 @@
                 });
         }
         function setLanguageMultiselect(container, options) {
-            $('<select id="LanguageId" name="' + options.field + '" data-bind="value: LanguageId" multiple="multiple"></select>')
+            $('<select id="LanguageId" name="' + options.field + '" required="required" data-bind="value: LanguageId" multiple="multiple"></select>')
                 .appendTo(container)
                 .kendoMultiSelect({
                     dataSource: {
@@ -118,6 +118,15 @@
                     },
                     dataTextField: "Language",
                     dataValueField: "LanguageId"
+                })
+                .kendoValidator({
+                    validate: function (e) {
+                        var multiselect = $(e.sender.element);
+                        var isValid = multiselect.data("kendoMultiSelect").value().length > 0;
+                        if (!isValid) {
+                            e.preventDefault();
+                        }
+                    }
                 });
         }
     function setPasswordEditor(container, options) {
